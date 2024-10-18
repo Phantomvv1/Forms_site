@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Help the Environment</h1>
+
+    <p>Name</p>
+    <input type="text" placeholder="Enter your name" id="name">
+
+    <p>Age</p>
+    <input type="number" placeholder="Enter your age" id="age">
+
+    <p id="question">Do you do things that help the environment daily?</p>
+    <p class="Answer"><input type="radio" name="daily_help" value="yes"> Yes</p>
+    <p class="Answer"><input type="radio" name="daily_help" value="no"> No</p>
+
+
+    <p id="question">Do you use public transport?</p>
+    <p class="Answer"><input type="radio" name="public_transport" value="yes"> Yes</p>
+    <p class="Answer"><input type="radio" name="public_transport" value="no"> No</p>
+
+
+    <p>What would you change from your daily routine to help the environment?</p>
+    <input type="text" placeholder="What would you change" id="routine_change">
+
+
+    <p id="question">How often do you recycle?</p>
+    <p class="Answer"><input type="radio" name="recycle" value="always"> Always</p>
+    <p class="Answer"><input type="radio" name="recycle" value="sometimes"> Sometimes</p>
+    <p class="Answer"><input type="radio" name="recycle" value="rarely"> Rarely</p>
+    <p class="Answer"><input type="radio" name="recycle" value="never"> Never</p>
+
+    <p id="question">How do you manage food waste at home?</p>
+    <p class="Answer"><input type="radio" name="food_waste" value="compost"> I compost it</p>
+    <p class="Answer"><input type="radio" name="food_waste" value="minimize"> I try to minimize food waste</p>
+    <p class="Answer"><input type="radio" name="food_waste" value="throw_away"> I just throw it away</p>
+
+    <p id="question">How many hours a week do you spend outdoors in nature?</p>
+    <input type="number" placeholder="Hours per week" id="nature_time">
+
+    <p id="question">Do you prefer eco-friendly products when shopping?</p>
+    <p class="Answer"><input type="radio" name="eco_products" value="always"> Always</p>
+    <p class="Answer"><input type="radio" name="eco_products" value="sometimes"> Sometimes</p>
+    <p class="Answer"><input type="radio" name="eco_products" value="never"> Never</p>
+
+    <p id="question">How important is climate change to you?</p>
+    <p class="Answer"><input type="radio" name="climate_change_importance" value="very_important"> Very Important</p>
+    <p class="Answer"><input type="radio" name="climate_change_importance" value="somewhat_important"> Somewhat Important</p>
+    <p class="Answer"><input type="radio" name="climate_change_importance" value="not_important"> Not Important</p>
+
+    <p id="question">Would you be willing to pay more for sustainable products?</p>
+    <p class="Answer"><input type="radio" name="pay_more_sustainable" value="yes"> Yes</p>
+    <p class="Answer"><input type="radio" name="pay_more_sustainable" value="no"> No</p>
+
+    <button id="Submit">Submit form</button>
+
+    <style>
+        body{
+            justify-content: center;
+            align-items: center;
+        }
+
+        #question{
+            justify-content: center;
+            align-items: center;
+        }
+
+        .answer{
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+    <script>
+        let inputElement = document.getElementById("input");
+
+        inputElement.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                let inputValue = inputElement.value;
+                console.log(inputValue);
+
+                fetch(`http://localhost:42069/validator?number=${inputValue}`, {
+                method: "GET",
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.resultValue == true){
+                    document.getElementById("response").innerText = "That is a valid credit card number";
+                } else {
+                    document.getElementById("response").innerText = "That is not a valid credit card number";
+                }
+            })
+            .catch(error => console.error("Error:", error));
+            }
+        });
+    </script>
+</body>
+</html>
