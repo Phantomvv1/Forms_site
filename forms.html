@@ -52,7 +52,7 @@
     <p class="Answer"><input type="radio" name="climate_change_importance" value="somewhat_important"> Somewhat Important</p>
     <p class="Answer"><input type="radio" name="climate_change_importance" value="not_important"> Not Important</p>
 
-    <p id="question">Would you be willing to pay more for sustainable products?</p>
+    <p id="question">Would you be willing to pay more for sustainable energy?</p>
     <p class="Answer"><input type="radio" name="pay_more_sustainable" value="yes"> Yes</p>
     <p class="Answer"><input type="radio" name="pay_more_sustainable" value="no"> No</p>
 
@@ -76,26 +76,69 @@
     </style>
 
     <script>
-        let inputElement = document.getElementById("input");
+        let submitButton = document.getElementById("Submit");
 
-        inputElement.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                let inputValue = inputElement.value;
-                console.log(inputValue);
-
-                fetch(`http://localhost:42069/validator?number=${inputValue}`, {
-                method: "GET",
+        submitButton.addEventListener("click", function() {
+            let name = document.getElementById("name").value;
+            let age = document.getElementById("age").value;
+            let routineChange = document.getElementById("routine_change").value;
+            let natureTime = document.getElementById("nature_time").value;
+            
+            //Radio inputs
+            var dailyHelp = document.querySelector('input[name="daily_help"]:checked')?.value;
+            if(dailyHelp == "yes")
+            {
+                dailyHelp = true;
+            } else {
+                dailyHelp = false
+            }
+            var publicTransport = document.querySelector('input[name="public_transport"]:checked')?.value;
+            if(publicTransport == "yes"){
+                publicTransport = true
+            } else {
+                publicTransport = false
+            }
+            let recycle = document.querySelector('input[name="recycle"]:checked')?.value;
+            let foodWaste = document.querySelector('input[name="food_waste"]:checked')?.value;
+            let ecoProducts = document.querySelector('input[name="eco_products"]:checked')?.value;
+            let climateChangeImportance = document.querySelector('input[name="climate_change_importance"]:checked')?.value;
+            var payMoreSustainable = document.querySelector('input[name="pay_more_sustainable"]:checked')?.value;
+            if(payMoreSustainable == "yes"){
+                payMoreSustainable = true;
+            } else {
+                payMoreSustainable = false
+            }
+            
+            let jsonData = {
+                name: name,
+                age: age,
+                routineChange: routineChange,
+                natureTime: natureTime,
+                dailyHelp: dailyHelp,
+                publicTransport: publicTransport,
+                recycle: recycle,
+                foodWaste: foodWaste,
+                ecoProducts: ecoProducts,
+                climateChangeImportance: climateChangeImportance,
+                payMoreSustainable: payMoreSustainable
+            };
+                fetch(`http://localhost:42069/sendData`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(jsonData)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.resultValue == true){
-                    document.getElementById("response").innerText = "That is a valid credit card number";
-                } else {
-                    document.getElementById("response").innerText = "That is not a valid credit card number";
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok " + response.statusText);
                 }
+                return response.json();
             })
             .catch(error => console.error("Error:", error));
-            }
+            
+            setTimeout(() => {console.log("Timeout");}, 1000);
+            document.location.assign("submit.html");
         });
     </script>
 </body>
