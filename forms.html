@@ -57,6 +57,7 @@
     <p class="Answer"><input type="radio" name="pay_more_sustainable" value="no"> No</p>
 
     <button id="Submit">Submit form</button>
+    <p id="reminder"></p>
 
     <style>
         body{
@@ -109,6 +110,14 @@
                 payMoreSustainable = false
             }
             
+            if(name == "" || age == 0 || routineChange == "" || natureTime < 0 || dailyHelp == "" || 
+            publicTransport == "" || recycle == "" || foodWaste == "" || ecoProducts == "" ||
+            climateChangeImportance == "" || payMoreSustainable == "")
+            {
+                let reminder = document.getElementById("reminder");
+                reminder.innerHTML = "Please fill all the fields in the form";
+                reminder.style.color = "red";
+            } else {
             let jsonData = {
                 name: name,
                 age: age,
@@ -122,7 +131,7 @@
                 climateChangeImportance: climateChangeImportance,
                 payMoreSustainable: payMoreSustainable
             };
-                fetch(`http://localhost:42069/sendData`, {
+            fetch(`http://localhost:42069/sendData`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -139,6 +148,8 @@
             
             setTimeout(() => {console.log("Timeout");}, 1000);
             document.location.assign("submit.html");
+            }
+            
         });
     </script>
 </body>
