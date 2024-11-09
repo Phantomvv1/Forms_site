@@ -56,7 +56,7 @@
     <p class="Answer"><input type="radio" name="pay_more_sustainable" value="yes"> Yes</p>
     <p class="Answer"><input type="radio" name="pay_more_sustainable" value="no"> No</p>
 
-    <button id="Submit">Submit form</button>
+    <button id="Submit">Submit</button>
     <p id="reminder"></p>
 
     <style>
@@ -109,10 +109,13 @@
             } else {
                 payMoreSustainable = false
             }
+
+            console.log(name, age, routineChange, natureTime, dailyHelp,
+             publicTransport, recycle, foodWaste, ecoProducts, climateChangeImportance, payMoreSustainable)
             
-            if(name == "" || age == 0 || routineChange == "" || natureTime < 0 || dailyHelp == "" || 
-            publicTransport == "" || recycle == "" || foodWaste == "" || ecoProducts == "" ||
-            climateChangeImportance == "" || payMoreSustainable == "")
+            if(name == "" || age == 0 || routineChange == "" || natureTime < 0 || dailyHelp === "" || 
+            publicTransport === "" || recycle == "" || foodWaste == "" || ecoProducts == "" ||
+            climateChangeImportance == "" || payMoreSustainable === "")
             {
                 let reminder = document.getElementById("reminder");
                 reminder.innerHTML = "Please fill all the fields in the form";
