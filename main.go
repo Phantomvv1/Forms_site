@@ -14,17 +14,22 @@ import (
 )
 
 type answers struct {
-	Name                    string
-	Age                     string
-	RoutineChange           string
-	NatureTime              string
-	DailyHelp               bool
-	PublicTransport         bool
-	Recycle                 string
-	FoodWaste               string
-	EcoProducts             string
-	ClimateChangeImportance string
-	PayMoreSustainable      bool
+	Name                    string `json:"name"`
+	Age                     string `json:"age"`
+	RoutineChange           string `json:"routineChange"`
+	NatureTime              string `json:"natureTime"`
+	DailyHelp               bool   `json:"dailyHelp"`
+	PublicTransport         bool   `json:"publicTransport"`
+	Recycle                 string `json:"recycle"`
+	FoodWaste               string `json:"foodWaste"`
+	EcoProducts             string `json:"ecoProducts"`
+	ClimateChangeImportance string `json:"climateChangeImportance"`
+	PayMoreSustainable      bool   `json:"payMoreSustainable"`
+}
+
+type Response struct {
+	Answers []answers `json:"answers"`
+	Length  int       `json:"length"`
 }
 
 func defaultFunc(w http.ResponseWriter, r *http.Request) {
@@ -51,6 +56,58 @@ func getSubmittions(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var response []answers
+
+	rows, err := conn.Query(context.Background(), "select p.name, p.age, a.routine_change, a.nature_time, "+
+		"a.help_the_environment, a.public_transport, a.recycle, "+
+		"a.waste_food, a.use_eco_products, a.climate_change_importance, a.sustainable_energy "+
+		"from people p "+
+		"join answers a on p.submittion_id = a.submittion_id;")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var length int
+
+	for rows.Next() {
+		var ans answers
+		err = rows.Scan(
+			&ans.Name,
+			&ans.Age,
+			&ans.RoutineChange,
+			&ans.NatureTime,
+			&ans.DailyHelp,
+			&ans.PublicTransport,
+			&ans.Recycle,
+			&ans.FoodWaste,
+			&ans.EcoProducts,
+			&ans.ClimateChangeImportance,
+			&ans.PayMoreSustainable,
+		)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		response = append(response, ans)
+		length += 1
+	}
+
+	var finalResponse Response = Response{
+		Answers: response,
+		Length:  length,
+	}
+
+	fmt.Println(finalResponse)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(finalResponse)
 }
 
 func recieveSubmittion(w http.ResponseWriter, r *http.Request) {

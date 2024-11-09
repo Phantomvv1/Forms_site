@@ -10,9 +10,46 @@
         <tr>
             <th>Name</th>
             <th>Age</th>
-            <th></th>
+            <th>Change of routine</th>
+            <th>Time spent in nature</th>
+            <th>Help the environment</th>
+            <th>Use public transport</th>
+            <th>Recycle</th>
+            <th>Manage food waste</th>
+            <th>Prefer eco-friendly products</th>
+            <th>Importance of climate change</th>
+            <th>Willing to pay more for sustainable energy</th>
         </tr>
+        <tbody>
 
+        </tbody>
     </table>
+    <style>
+        #table{
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+    </style>
+    <script>
+        const table = document.getElementById("table").getElementsByTagName("tbody");
+
+        fetch(`http://localhost:42069/getSubmittions`, {
+        method: "GET",
+        })
+        .then(response => response.json())
+        .then(data => {
+            for(let i; i < data.lenght; ++i){
+                const newRow = table.inserRow()
+                data.forEach(data => {
+                    const newCell = newRow.inserCell();
+                    newCell.textContent = data;
+                })
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    </script>
 </body>
 </html>
