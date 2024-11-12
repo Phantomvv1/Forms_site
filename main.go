@@ -60,6 +60,7 @@ func getSubmittions(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer conn.Close(context.Background())
 
 	var response []answers
 
@@ -131,6 +132,7 @@ func recieveSubmittion(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer conn.Close(context.Background())
 
 	_, err = conn.Exec(context.Background(), "create table if not exists people (submittion_id serial primary key, name text, age int);")
 	if err != nil {
