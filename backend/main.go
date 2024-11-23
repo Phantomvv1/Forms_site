@@ -149,10 +149,9 @@ func recieveSubmittion(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fs := http.FileServer(http.Dir("."))
-	http.Handle("/", fs)
-
 	mux := http.NewServeMux()
+
+	mux.Handle("/", http.FileServer(http.Dir(".")))
 
 	mux.HandleFunc("/getSubmittions", getSubmittions)
 	mux.HandleFunc("/sendData", recieveSubmittion)

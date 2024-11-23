@@ -1,9 +1,7 @@
-version: '3.9'
-
 services:
   app:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     ports:
       - "42069:42069"
@@ -14,6 +12,13 @@ services:
     volumes:
       - .:/app
     command: ["go", "run", "main.go"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
 
   db:
     image: postgres:16 

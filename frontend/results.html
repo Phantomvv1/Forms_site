@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <table id="table">
         <tr>
@@ -25,7 +27,7 @@
         </tbody>
     </table>
     <style>
-        #table{
+        #table {
             border: 1px solid black;
             padding: 8px;
             text-align: center;
@@ -37,19 +39,21 @@
         const table = document.getElementById("table").getElementsByTagName("tbody");
 
         fetch(`http://localhost:42069/getSubmittions`, {
-        method: "GET",
+            method: "GET",
         })
-        .then(response => response.json())
-        .then(data => {
-            for(let i; i < data.lenght; ++i){
-                const newRow = table.inserRow()
-                data.forEach(data => {
-                    const newCell = newRow.inserCell();
-                    newCell.textContent = data;
-                })
-            }
-        })
-        .catch(error => console.error("Error:", error));
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                for (let i = 0; i < data.lenght; ++i) {
+                    const newRow = table.inserRow()
+                    data.forEach(data => {
+                        const newCell = newRow.inserCell();
+                        newCell.textContent = data;
+                    })
+                }
+            })
+            .catch(error => console.error("Error:", error));
     </script>
 </body>
+
 </html>
