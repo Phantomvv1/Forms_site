@@ -11,7 +11,7 @@ services:
       - db
     volumes:
       - .:/app
-    command: ["backend/", "go", "run", "main.go"]
+    command: ["go", "run", "backend/main.go"]
 
   frontend:
     build:
