@@ -32,20 +32,6 @@ type Response struct {
 	Length  int       `json:"length"`
 }
 
-func defaultFunc(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
-	if r.Method == http.MethodOptions {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
-
-	fmt.Println("Hello")
-	io.WriteString(w, "default")
-}
-
 func getSubmittions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
@@ -164,11 +150,13 @@ func recieveSubmittion(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	fs := http.FileServer(http.Dir("."))
+	http.Handle("/", fs)
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/getSubmittions", getSubmittions)
 	mux.HandleFunc("/sendData", recieveSubmittion)
-	mux.HandleFunc("/", defaultFunc)
 
 	err := http.ListenAndServe(":42069", mux)
 	if errors.Is(err, http.ErrServerClosed) {
