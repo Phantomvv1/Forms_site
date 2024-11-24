@@ -1,11 +1,9 @@
 FROM golang:1.23
 
-WORKDIR /app
+WORKDIR backend
 
 COPY . .
 
 RUN go mod tidy
-
-EXPOSE 42069
 
 CMD ["go", "run", "main.go"]

@@ -1,5 +1,5 @@
 services:
-  app:
+  backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -11,7 +11,6 @@ services:
       - db
     volumes:
       - .:/app
-    command: ["go", "run", "backend/main.go"]
 
   frontend:
     build:
