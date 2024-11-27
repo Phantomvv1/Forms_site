@@ -28,15 +28,20 @@
     </table>
     <style>
         #table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        #table th,
+        #table td {
             border: 1px solid black;
             padding: 8px;
             text-align: center;
-            margin: 0 auto;
-            border-collapse: collapse;
         }
     </style>
     <script>
-        const table = document.getElementById("table").getElementsByTagName("tbody");
+        const table = document.getElementById("table").getElementsByTagName("tbody")[0];
 
         fetch(`http://localhost:42069/getSubmittions`, {
             method: "GET",
@@ -44,12 +49,12 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                for (let i = 0; i < data.lenght; ++i) {
-                    const newRow = table.inserRow()
-                    data.forEach(data => {
-                        const newCell = newRow.inserCell();
-                        newCell.textContent = data;
-                    })
+                for (let i = 0; i < data.length; ++i) {
+                    const newRow = table.insertRow();
+                    Object.values(data.answers[i]).forEach(value => {
+                        const newCell = newRow.insertCell();
+                        newCell.textContent = value;
+                    });
                 }
             })
             .catch(error => console.error("Error:", error));
