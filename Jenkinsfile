@@ -9,7 +9,7 @@ pipeline {
             }
         }
         stage('Checkout') {
-            steps { git url: 'https://github.com/Phantomvv1/Forms_site', credentialsId: '46f1d746-664e-4009-9e7f-bd01c49ee4fc' }
+            checkout scm
         }
         stage('Build') {
             steps {
